@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Affichage de personnages aléatoires</title>
+  <title>Personnages aléatoires</title>
 </head>
 <body>
   <div id="characters"></div>
-  <button id="exportButton">Exporter en CSV</button>
+  <button id="exportButton">Export en CSV</button>
 
   <script>
-    // Fonction pour effectuer une requête "fetch" pour obtenir un personnage aléatoire
+    // Requête "fetch" pour avoir un personnage aléatoire
     async function getRandomCharacter() {
     const response = await fetch('/getrandomcharacter');
     const character = await response.json();
     return character;
     }
 
-    // Fonction pour vérifier que les 3 personnages tirés au hasard sont différents
+    // Vérification que les 3 personnages tirés au hasard sont différents
     async function getUniqueCharacters() {
     const characters = [];
 
@@ -26,11 +26,10 @@
             characters.push(character);
         }
     }
-
     return characters;
     }
 
-    // Fonction pour l'affichage des personnages sur la page
+    // Affichage des personnages sur la page
     function displayCharacters(characters) {
     const charactersContainer = document.getElementById('characters');
 
@@ -41,13 +40,12 @@
         });
     }
 
-    // Fonction pour exporter la base de données en format CSV
+    // Export des données en CSV
     function exportCSV() {
-        window.location.href = '/exportdataset';
-    
+      window.location.href = '/exportdataset';
     }
 
-    // Fonction principale pour charger les personnages et gérer les événements
+    // Chargement des personnages 
     async function loadCharacters() {
         const characters = await getUniqueCharacters();
         displayCharacters(characters);
@@ -60,6 +58,7 @@
 
     // Fonction principale au chargement de la page
     document.addEventListener('DOMContentLoaded', loadCharacters);
+    
   </script>
 </body>
 </html>
