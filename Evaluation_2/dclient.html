@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Affichage de personnages aléatoires</title>
+</head>
+<body>
+  <div id="characters"></div>
+  <button id="exportButton">Exporter en CSV</button>
+
+  <script>
+    // Fonction pour effectuer une requête "fetch" pour obtenir un personnage aléatoire
+    async function getRandomCharacter() {
+    const response = await fetch('/getrandomcharacter');
+    const character = await response.json();
+    return character;
+    }
+
+    // Fonction pour vérifier que les 3 personnages tirés au hasard sont différents
+    async function getUniqueCharacters() {
+    const characters = [];
+
+    while (characters.length < 3) {
+        const character = await getRandomCharacter();
+
+        if (!characters.some((c) => c.id === character.id)) {
+            characters.push(character);
+        }
+    }
+
+    return characters;
+    }
+
+    // Fonction pour l'affichage des personnages sur la page
+    function displayCharacters(characters) {
+    const charactersContainer = document.getElementById('characters');
+
+    characters.forEach((character) => {
+        const characterElement = document.createElement('div');
+        characterElement.textContent = character.name;
+        charactersContainer.appendChild(characterElement);
+        });
+    }
+
+    // Fonction pour exporter la base de données en format CSV
+    function exportCSV() {
+        window.location.href = '/exportdataset';
+    
+    }
+
+    // Fonction principale pour charger les personnages et gérer les événements
+    async function loadCharacters() {
+        const characters = await getUniqueCharacters();
+        displayCharacters(characters);
+
+        const exportButton = document.getElementById('exportButton');
+        exportButton.addEventListener('click', exportCSV);
+    }
+
+    loadCharacters();
+
+    // Fonction principale au chargement de la page
+    document.addEventListener('DOMContentLoaded', loadCharacters);
+  </script>
+</body>
+</html>
